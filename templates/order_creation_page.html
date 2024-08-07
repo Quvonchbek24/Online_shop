@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="columns">
+        <div class="column">
+            <div class="box">
+                <form method="post" action="{% url 'create_order' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="title">
+                        Xarid uchun ma'lumotlat
+                    </div>
+                    {% for field in form %}
+                    <div class="field">
+                        <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="button is-fullwidth is-success">Rasmiylashtirish</button>
+                </form>
+            </div>
+        </div>
+        <div class="column is-7">
+            <div class="box">
+                <a class="button is-danger" href="{% url 'cart' %}">Ortga qaytish</a>
+                <hr>
+                <div class="title">Olingan mahsulotlar</div>
+                <table class="table is-fullwidth">
+                    <thead>
+                        <tr class="has-text-weight-bold">
+                            <td></td>
+                            <td>Mahsulor</td>
+                            <td>Narxi</td>
+                            <td>Soni</td>
+                            <td>Umumiy narx</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                    <tr>
+                        <td>
+                            <img src="{{ item.product.image.url }}" alt="" width="90" height="90">
+                        </td>
+                        <td>{{ item.product.title | truncatewords:4 }}</td>
+                        <td>{{ item.product.price }} $</td>
+                        <td>x{{ item.quantity }}</td>
+                        <td>{{ item.total_price }} $</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

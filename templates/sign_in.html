@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block auth %}
+<div class="columns is-centered mt-5">
+    <div class="column is-3 is-9-tablet is-5-desktop is-vcentered" style="padding: 20px 0;">
+        <div class="" style="box-shadow: 20px 20px 50px rgba(191, 191, 191); padding: 30px; border-radius: 10px">
+            <form class="form  has-text-centered" method="post">
+                <h1 class="title is-size-2 has-text-centered">Sign In</h1>
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="field">
+                    <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+                {% endfor %}
+                <button type="submit" class="button is-primary is-fullwidth">
+                    Submit
+                </button>
+                <p class="content mt-3">
+                    Don't have an account?
+                    <span>
+                        <a href="{% url 'sign_up' %}">Sign up here</a>
+                    </span>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block slider %}
+    <div class="container-slide mb-6">
+        <div id="carousel-demo" class="carousel">
+            {% for slide in slides %}
+                <div class="item-1">
+                    <img src="{{ slide.image.url }}" alt="" class="slider-img">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="columns">
+    <div class="column is-one-fifth">
+
+        <aside class="menu p-4" style="height: 660px; border-radius: 10px; padding: 15px; box-shadow: 25px 25px 50px rgba(200, 200, 200); position: sticky; top: 0">
+            <p class="menu-label is-size-6-desktop is-size-5-mobile is-size-7-tablet">
+                Kategoriyalar
+            </p>
+            <ul class="menu-list">
+                {% for category in categories %}
+                <li>
+                    <a href="{% url 'product_list' %}?category={{ category.pk }}" class="dropdown-item is-size-5 is-size-6-tablet">
+                        {{ category }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </aside>
+    </div>
+    <div class="column">
+        <div class="columns is-multiline">
+            {% if products %}
+            {% for product in products %}
+            <a href="{% url 'product_detail' product.pk %}">
+            <div class="column is-3-desktop is-6-tablet is-12-mobile">
+                <div class="bir" style="">
+                    <div class="card-image">
+                        <figure class="image">
+                            <img src="{{ product.image.url }}" alt="Placeholder image" style="max-height: 160px; border-radius:15px;">
+                        </figure>
+                        <div class="has-text-right mr-4">
+                            {% if product.is_new %}
+                            <span class="tag is-danger">New!</span>
+                            {% endif %}
+                            {% if product.is_discounted %}
+                            <span class="tag is-primary m-4">Discount! -20%</span>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-6">{{ product | truncatewords:5 }}</p>
+                                <p class="title is-7">{{ product.description | slice:":70" }}</p>
+                            </div>
+                        </div>
+                        <div class="content has-text-weight-bold"><br>
+                            <div class="columns">
+                                {% if product.is_discounted %}
+                                <div class="column">
+                                    Asl Narxi
+                                    {{ product.price }} $
+                                </div>
+                                <div class="column">
+                                    chegirmada:
+                                    {{ product.sale_product_price }} $
+                                </div>
+                                {% else %}
+                                <div class="column">
+                                    {{ product.price }} $
+                                </div>
+                                {% endif %}
+                                <div class="column has-text-right vs-centered">
+                                    <a href="{% url 'product_list' %}?product={{ product.id }}">
+                                        <ion-icon name="cart-outline" class="order is-size-4"></ion-icon>
+                                    </a>
+                                </div>
+                            </div>
+                            <p> <i class="fa-solid fa-eye"></i>  {{ product.view_set.count }} </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            </a>
+            {% endfor %}
+            {% else %}
+            <h1 class="is-size-2">Siz Qidirgan Mahsulot Topilmadi</h1>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

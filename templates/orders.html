@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card p-5">
+        <div class="content">
+            {% if orders %}
+            <div class="title has-text-centered">Meni buyurtmalarim</div>
+            <table class="table has-text-centered">
+                <thead>
+                    <tr>
+                        <th>Order number</th>
+                        <th>Mahsulot</th>
+                        <th>Jami</th>
+                        <th>Status</th>
+                        <th>To'lov holati</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order }}</td>
+                        <td>
+                            {% for order_product in order.order_products.all %}
+                            <a href="{% url 'product_detail' order_product.product.pk %}">
+                                {{ order_product }}
+                            </a>,
+                            {% endfor %}
+                        </td>
+                        <td>{{ order.total_price }} $</td>
+                        <td>yetkazilmoqda...</td>
+                        <td>To'lov qilinmagan</td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            {% else %}
+            <p class="title has-text-centered">
+                Nothing ordered yet
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

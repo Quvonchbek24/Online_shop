@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="card mb-4 p-4 has-text-weight-bold is-size-4">
+    <a class="button has-text-left is-danger" href="{% url 'product_list' %}">Asosiy sahifa</a>
+    {% if cart_items %}
+    <a class="button has-text-right is-info" href="{% url 'create_order' %}">Mahsulotni rasmiylashtirish</a>
+    {% endif %}
+    <hr>
+    <div class="columns has-text-centered box">
+        <div class="column">
+            <div class="content">{{ total_quantity }} ta Mahsulot olindi </div>
+        </div>
+        <div class="column">
+            <div class="content">Jami narx: {{ total_price }} $</div>
+        </div>
+    </div>
+</div>
+
+<div class="card p-5">
+    <div class="content">
+        {% if cart_items %}
+        <div class="table has-text-centered">
+            <table class="table is-striped is-bordered">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Nomi</th>
+                        <th>Narxi</th>
+                        <th>Soni</th>
+                        <th>Jami</th>
+                        <th>O'chirish</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>
+                            <img src="{{ item.product.image.url }}" alt="" width="100" height="100">
+                        </td>
+                        <td>{{ item.product.title | slice:":20" }}...</td>
+                        <td>{{ item.product.price }} $</td>
+                        <td>{{ item.quantity }}
+
+                            <div class="quantity ml-3">
+
+                                <a href="{% url 'edit_cart_item' item.id %}?action=add">
+                                    <img src="{% static 'img/arrow-up.png' %}" class="arrows" alt="">
+                                </a>
+                                <a href="{% url 'edit_cart_item' item.id %}?action=take">
+                                    <img src="{% static 'img/arrow-down.png' %}" class="arrows" alt="">
+                                </a>
+
+                            </div>
+                        </td>
+                        <td>{{ item.total_price }} $</td>
+                        <td>
+                            <a href="{% url 'delete_item' item.pk %}" style="font-size: 20px; color: black;">
+                                <ion-icon name="trash-outline"></ion-icon>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="title has-text-centered">Sizda hali hech narsa yoq.</p>
+        <p class="subtitle has-text-centered"> <a href="{% url 'product_list' %}">Biror mahsulot Xarid qilishingiz
+                mumkin</a></p>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
